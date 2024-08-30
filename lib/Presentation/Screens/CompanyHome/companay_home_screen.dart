@@ -8,6 +8,8 @@ import '../../Widget/custom_text-field.dart';
 import '../../Widget/my_button.dart';
 
 class CompanyHomeScreen extends StatefulWidget {
+
+
   const CompanyHomeScreen({super.key});
 
   @override
@@ -15,6 +17,11 @@ class CompanyHomeScreen extends StatefulWidget {
 }
 
 class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
+  final TextEditingController jobTitleController = TextEditingController();
+  final TextEditingController numberOfPeopleController = TextEditingController();
+  final TextEditingController salaryController = TextEditingController();
+  final TextEditingController durationController = TextEditingController();
+  final TextEditingController jobDescriptionController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   Color _appBarColor = Colors.transparent;
   final TextEditingController _dateController = TextEditingController();
@@ -62,7 +69,6 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     }
   }
 
-
   void _showConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -73,8 +79,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
           content: Container(
             height: 250, // Set the fixed height
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: Colors.indigo,width: 2)
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: Colors.indigo, width: 2),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -162,19 +168,22 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                       textAlign: TextAlign.start,
                       hintText: 'Animation M/W',
                       titleText: AppTranslations.of(context).jobTitle,
+                      controller: jobTitleController,
                     ),
                     CustomTextField(
                       textAlign: TextAlign.start,
                       titleText: AppTranslations.of(context).numberOfPeople,
                       hintText: '10',
+                      controller: numberOfPeopleController,
                     ),
-                     Row(
+                    Row(
                       children: [
                         Expanded(
                           child: CustomTextField(
                             textAlign: TextAlign.start,
                             titleText: AppTranslations.of(context).salary,
                             hintText: '10',
+                            controller: salaryController,
                           ),
                         ),
                         Expanded(
@@ -198,11 +207,12 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                             hintText: _selectedDate,
                           ),
                         ),
-                          Expanded(
+                        Expanded(
                           child: CustomTextField(
                             textAlign: TextAlign.start,
                             titleText: AppTranslations.of(context).duration,
                             hintText: '> 2 Months',
+                            controller: durationController,
                           ),
                         ),
                       ],
@@ -223,6 +233,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                       child: TextFormField(
                         maxLines: 6,
                         style: const TextStyle(color: Colors.white),
+                        controller: jobDescriptionController,
                         decoration: InputDecoration(
                           contentPadding:  const EdgeInsets.only(left:  20,top:  30,right: 20,bottom: 10),
                           hintText: AppTranslations.of(context).wordsMaximum,
@@ -236,7 +247,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                             borderSide: BorderSide(color: Theme.of(context).primaryColor),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(33  ),
+                            borderRadius: BorderRadius.circular(33),
                             borderSide: BorderSide(color: Theme.of(context).primaryColor),
                           ),
                         ),

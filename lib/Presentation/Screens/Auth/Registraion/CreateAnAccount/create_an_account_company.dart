@@ -1,20 +1,21 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:darlemploi/Presentation/Widget/my_button.dart';
-import 'package:go_router/go_router.dart';
-import 'package:darlemploi/config/app_router_constants.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../../Language/app_translation.dart';
 import '../../../../Widget/custom_bg.dart';
 import '../../../CompanyHome/companay_home_screen.dart';
+import '../Provider/registration_provider.dart';
 
 class CompanyRegistrationTwoScreen extends StatefulWidget {
   const CompanyRegistrationTwoScreen({super.key});
 
   @override
-  _CompanyRegistrationTwoScreenState createState() => _CompanyRegistrationTwoScreenState();
+  _CompanyRegistrationTwoScreenState createState() =>
+      _CompanyRegistrationTwoScreenState();
 }
 
-class _CompanyRegistrationTwoScreenState extends State<CompanyRegistrationTwoScreen> {
+class _CompanyRegistrationTwoScreenState
+    extends State<CompanyRegistrationTwoScreen> {
   String? _selectedEvents;
 
   @override
@@ -32,93 +33,136 @@ class _CompanyRegistrationTwoScreenState extends State<CompanyRegistrationTwoScr
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 30),
-              Image.asset('assets/Images/name_logo.png', width: 400, height: 120),
+              Image.asset('assets/Images/name_logo.png',
+                  width: 400, height: 120),
               const SizedBox(height: 50),
-               Text(
-                 AppTranslations.of(context).companyAddress,
+              Text(
+                AppTranslations.of(context).companyAddress,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               const SizedBox(height: 5),
-              TextFormField(
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
-                  hintText: 'N°186 B6 UV 5 Ali Mendjli El khroub',
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                ),
+              Consumer<RegistrationProvider>(
+                builder: (context, registrationProvider, child) {
+                  return TextFormField(
+                    controller: registrationProvider.addressController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: -9),
+                      hintText: 'N°186 B6 UV 5 Ali Mendjli El khroub',
+                      hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w400, color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 12.0),
               Text(
                 AppTranslations.of(context).city,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               const SizedBox(height: 5),
-              TextFormField(
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
-                  hintText: 'Constantine',
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                ),
+              Consumer<RegistrationProvider>(
+                builder: (context, registrationProvider, child) {
+                  return TextFormField(
+                    controller: registrationProvider.cityController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: -9),
+                      hintText: 'Constantine',
+                      hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w400, color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 12.0),
               Text(
                 AppTranslations.of(context).postalCode,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               const SizedBox(height: 5),
-              TextFormField(
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
-                  hintText: '25000',
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  ),
-                ),
+              Consumer<RegistrationProvider>(
+                builder: (context, registrationProvider, child) {
+                  return TextFormField(
+                    controller: registrationProvider.postalCodeController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: -9),
+                      hintText: '25000',
+                      hintStyle: const TextStyle(
+                          fontWeight: FontWeight.w400, color: Colors.white),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(55),
+                        borderSide:
+                            BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 12.0),
-               Text(
+              Text(
                 '${AppTranslations.of(context).events}:',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               const SizedBox(height: 5),
               DropdownButtonFormField<String>(
@@ -126,23 +170,29 @@ class _CompanyRegistrationTwoScreenState extends State<CompanyRegistrationTwoScr
                 style: TextStyle(color: Colors.white),
                 dropdownColor: Theme.of(context).primaryColor.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(12),
-                icon: Icon(Icons.arrow_drop_down_rounded,color: Theme.of(context).primaryColor),
+                icon: Icon(Icons.arrow_drop_down_rounded,
+                    color: Theme.of(context).primaryColor),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   hintText: AppTranslations.of(context).events,
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
+                  hintStyle: const TextStyle(
+                      fontWeight: FontWeight.w400, color: Colors.white),
                   iconColor: Theme.of(context).primaryColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColor),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(55),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderSide:
+                        BorderSide(color: Theme.of(context).primaryColor),
                   ),
                 ),
                 items: <String>[
@@ -169,8 +219,11 @@ class _CompanyRegistrationTwoScreenState extends State<CompanyRegistrationTwoScr
                   width: 140,
                   btnColor: Theme.of(context).primaryColor,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CompanyHomeScreen()));
-                    // context.go(AppRouteConstants.dashBoardScreen);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CompanyHomeScreen()),
+                    );
                   },
                   title: AppTranslations.of(context).next,
                 ),

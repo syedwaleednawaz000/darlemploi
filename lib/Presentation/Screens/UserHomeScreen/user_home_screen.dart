@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:darlemploi/Language/app_translation.dart';
 import 'package:provider/provider.dart';
+import 'package:darlemploi/Language/app_translation.dart';
 import 'package:darlemploi/Presentation/Screens/UserHomeScreen/provider/home_provider.dart';
 import 'package:flutter_popup/flutter_popup.dart';
 import 'package:go_router/go_router.dart';
@@ -45,6 +45,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final homeProvider = Provider.of<HomeProvider>(context);
+
     return WillPopScope(
       onWillPop: () async {
         context.push(AppRouteConstants.selectionScreen);
@@ -73,137 +75,116 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Consumer<HomeProvider>(
-                            builder: (context, provider, child) {
-                              return DropDownTextField(
-                                hint: provider.selectedCity,
-                                titleText: AppTranslations.of(context).cityDepartmentRegion,
-                                suffixIcon: DropdownButton<String>(
-                                  underline: const SizedBox.shrink(),
-                                  // value: provider.selectedCity,
-                                  items: <String>[
-                                    'Option 1',
-                                    'Option 2',
-                                    'Option 3',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    if (newValue != null) {
-                                      provider.setCity(newValue);
-                                    }
-                                  },
-                                  hint: Text(AppTranslations.of(context).select),
-                                ),
-                              );
-                            },
+                          DropDownTextField(
+                            hint: homeProvider.selectedCity,
+                            titleText: AppTranslations.of(context).cityDepartmentRegion,
+                            suffixIcon: DropdownButton<String>(
+                              underline: const SizedBox.shrink(),
+                              items: <String>[
+                                'Option 1',
+                                'Option 2',
+                                'Option 3',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  homeProvider.setCity(newValue);
+                                }
+                              },
+                              hint: Text(AppTranslations.of(context).select),
+                            ),
                           ),
-                          Consumer<HomeProvider>(
-                            builder: (context, provider, child) {
-                              return DropDownTextField(
-                                hint: provider.selectedDuration,
-                                titleText: AppTranslations.of(context).duration,
-                                suffixIcon: DropdownButton<String>(
-                                  underline: const SizedBox.shrink(),
-                                  // value: provider.selectedDuration,
-                                  items: <String>[
-                                    'Option 1',
-                                    'Option 2',
-                                    'Option 3',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    if (newValue != null) {
-                                      provider.setDuration(newValue);
-                                    }
-                                  },
-                                  hint:  Text(AppTranslations.of(context).select),
-                                ),
-                              );
-                            },
+                          DropDownTextField(
+                            hint: homeProvider.selectedDuration,
+                            titleText: AppTranslations.of(context).duration,
+                            suffixIcon: DropdownButton<String>(
+                              underline: const SizedBox.shrink(),
+                              items: <String>[
+                                'Option 1',
+                                'Option 2',
+                                'Option 3',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  homeProvider.setDuration(newValue);
+                                }
+                              },
+                              hint:  Text(AppTranslations.of(context).select),
+                            ),
                           ),
                           const SizedBox(height: 10),
                           Row(
                             children: [
                               Expanded(
-                                child: Consumer<HomeProvider>(
-                                  builder: (context, provider, child) {
-                                    return  DropDownTextField(
-                                      hint: '2000 DZD',
-                                      readOnly: false,
-                                      titleText: AppTranslations.of(context).minimumSalary,
-                                    );
-                                  },
+                                child: DropDownTextField(
+                                  hint: homeProvider.selectedSalary,
+                                  readOnly: false,
+                                  titleText: AppTranslations.of(context).minimumSalary,
+                                  controller: homeProvider.salaryController,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
-                                child: Consumer<HomeProvider>(
-                                  builder: (context, provider, child) {
-                                    return DropDownTextField(
-                                      hint: provider.selectedDay,
-                                      titleText: '     ',
-                                      suffixIcon: DropdownButton<String>(
-                                        underline: const SizedBox.shrink(),
-                                        // value: provider.selectedDay,
-                                        items: <String>[
-                                          'Day',
-                                          'Week',
-                                          'Month',
-                                        ].map((String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? newValue) {
-                                          if (newValue != null) {
-                                            provider.setDay(newValue);
-                                          }
-                                        },
-                                        hint:  Text(AppTranslations.of(context).done),
-                                      ),
-                                    );
-                                  },
+                                child: DropDownTextField(
+                                  hint: homeProvider.selectedDay,
+                                  titleText: '     ',
+                                  suffixIcon: DropdownButton<String>(
+                                    underline: const SizedBox.shrink(),
+                                    items: <String>[
+                                      'Day',
+                                      'Week',
+                                      'Month',
+                                    ].map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      if (newValue != null) {
+                                        homeProvider.setDay(newValue);
+                                      }
+                                    },
+                                    hint:  Text(AppTranslations.of(context).done),
+                                  ),
+                                  controller: homeProvider.dayController,
                                 ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 16),
-                          Consumer<HomeProvider>(
-                            builder: (context, provider, child) {
-                              return DropDownTextField(
-                                hint: provider.selectedSector,
-                                titleText: AppTranslations.of(context).events,
-                                suffixIcon: DropdownButton<String>(
-                                  underline: const SizedBox.shrink(),
-                                  // value: provider.selectedSector,
-                                  items: <String>[
-                                    'Option 1',
-                                    'Option 2',
-                                    'Option 3',
-                                  ].map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    if (newValue != null) {
-                                      provider.setSector(newValue);
-                                    }
-                                  },
-                                  hint:  Text(AppTranslations.of(context).select),
-                                ),
-                              );
-                            },
+                          DropDownTextField(
+                            hint: homeProvider.selectedSector,
+                            titleText: AppTranslations.of(context).events,
+                            suffixIcon: DropdownButton<String>(
+                              underline: const SizedBox.shrink(),
+                              items: <String>[
+                                'Option 1',
+                                'Option 2',
+                                'Option 3',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  homeProvider.setSector(newValue);
+                                }
+                              },
+                              hint:  Text(AppTranslations.of(context).select),
+                            ),
+                            controller: homeProvider.sectorController,
                           ),
                           const SizedBox(height: 16),
                           Center(

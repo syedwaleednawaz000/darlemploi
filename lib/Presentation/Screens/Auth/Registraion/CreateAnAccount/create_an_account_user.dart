@@ -19,6 +19,10 @@ class _RegistrationTwoScreenState extends State<RegistrationTwoScreen> {
   String? _selectedEducation;
   String? _pickedFile;
 
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _postalCodeController = TextEditingController();
+
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -30,6 +34,14 @@ class _RegistrationTwoScreenState extends State<RegistrationTwoScreen> {
         _pickedFile = result.files.single.name;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _addressController.dispose();
+    _cityController.dispose();
+    _postalCodeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,6 +67,7 @@ class _RegistrationTwoScreenState extends State<RegistrationTwoScreen> {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _addressController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
@@ -82,6 +95,7 @@ class _RegistrationTwoScreenState extends State<RegistrationTwoScreen> {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _cityController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
@@ -109,6 +123,7 @@ class _RegistrationTwoScreenState extends State<RegistrationTwoScreen> {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _postalCodeController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),
