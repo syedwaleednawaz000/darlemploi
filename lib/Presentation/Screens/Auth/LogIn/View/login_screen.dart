@@ -45,13 +45,13 @@ class LoginScreen extends StatelessWidget {
                 Consumer<LoginProvider>(
                   builder: (context, loginProvider, child) {
                     return TextFormField(
-                      validator: Validation.validateEmail,
-                      controller: loginProvider.emailController,
+                      validator: Validation.validateUsername,
+                      controller: loginProvider.userNameController,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
-                        hintText: 'Kaddour-Boumedous@gmail.com',
+                        hintText: 'kamran@123',
                         hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(55),
@@ -113,8 +113,8 @@ class LoginScreen extends StatelessWidget {
                         if (_formKey.currentState!.validate()) {
                           loginProvider.login(params: {
                             "action": AppUrl.loginUser,
-                            "user_name": "kamran",
-                            "password": "Kam@123455",
+                            "user_name": loginProvider.userNameController.text.trim(),
+                            "password":loginProvider.passwordController.text.trim(),
                           });
                         }
                       },

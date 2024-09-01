@@ -65,7 +65,7 @@ class APIClient {
       if (error.response != null) {
         String content = error.response.toString();
         Map<String, dynamic> map = jsonDecode(error.response.toString());
-        ToastMessage.toastMessage(message: map['message']);
+        ToastMessage.toastMessage(message: map['message'],isError: true);
         print("This is an error in Dio: ${map['message'].toString()}");
       }
       rethrow;

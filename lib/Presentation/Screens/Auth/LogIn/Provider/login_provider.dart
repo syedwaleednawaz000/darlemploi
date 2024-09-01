@@ -1,3 +1,4 @@
+import 'package:darlemploi/Presentation/Screens/CompanyHome/companay_home_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:darlemploi/Data/repositories/api_service.dart';
@@ -8,7 +9,7 @@ class LoginProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   bool _loading = false;
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   bool get loading => _loading;
@@ -24,8 +25,12 @@ class LoginProvider extends ChangeNotifier {
       Response response = await _apiService.registerUser(params: params);
       if (response.statusCode == 200) {
         changeLoadingStatus(load: false);
-        print(" response in else ${response.data}");
-        Get.to(() => const UserHomeScreen());
+        print(" response in iff ${response.data['data']['user']['type']}");
+        if(response.data['data']['user']['type'] == "employee"){
+          Get.offAll(() => const UserHomeScreen());
+        }else{
+          Get.offAll(() => const CompanyHomeScreen());
+        }
         notifyListeners();
       } else {
         changeLoadingStatus(load: false);
@@ -39,7 +44,7 @@ class LoginProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    emailController.dispose();
+    userNameController.dispose();
     passwordController.dispose();
     super.dispose();
   }

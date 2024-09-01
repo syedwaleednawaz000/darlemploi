@@ -47,4 +47,18 @@ class Validation{
     }
     return null; // Return null if validation succeeds
   }
+  static String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Username cannot be empty';
+    }
+    // Username validation: must include at least one letter, one digit, and one special character
+    // Allowed special characters are: !@#\$&*~_
+    const String pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$&*~_])[a-zA-Z\d!@#\$&*~_]{3,20}$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Username must be 3-20 characters long, and include at least one letter, one digit, and one special character (!@#\$&*~_)';
+    }
+    return null; // Return null if validation succeeds
+  }
+
 }
