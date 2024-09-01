@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:darlemploi/Data/repositories/api_service.dart';
 
-class RegistrationProvider extends ChangeNotifier {
+class CompanyRegistrationProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
 
   TextEditingController addressController = TextEditingController();

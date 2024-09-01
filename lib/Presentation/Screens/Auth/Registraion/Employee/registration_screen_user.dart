@@ -1,3 +1,4 @@
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Employee/Provider/user_registration_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:darlemploi/Language/app_translation.dart';
@@ -5,14 +6,14 @@ import 'package:darlemploi/Presentation/Widget/my_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:darlemploi/config/app_router_constants.dart';
 import '../../../../Widget/custom_bg.dart';
-import '../CreateAnAccount/create_an_account_user.dart';
-import '../Provider/registration_provider.dart';
+import 'create_an_account_user.dart';
+
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final registrationProvider = Provider.of<RegistrationProvider>(context);
+    final registrationProvider = Provider.of<UserRegistrationProvider>(context);
 
     return WillPopScope(
       onWillPop: () async {

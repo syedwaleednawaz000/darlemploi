@@ -19,14 +19,7 @@ class WellComeScreen extends StatelessWidget {
     return prefs.getString('userType');
   }
 
-  void _handleCreateAccount(BuildContext context) async {
-    String? userType = await _getUserType();
-    if (userType == 'candidate') {
-      context.go(AppRouteConstants.registration);
-    } else {
-      context.go(AppRouteConstants.registrationScreenCompany);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +60,6 @@ class WellComeScreen extends StatelessWidget {
             title: AppTranslations.of(context).login,
             onTap: () {
               Get.to(()=> LoginScreen());
-              // context.go(AppRouteConstants.login);
             },
           ),
         ],

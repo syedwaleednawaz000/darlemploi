@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/Forgot/View/forgot_screen.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/LogIn/View/login_screen.dart';
-import 'package:darlemploi/Presentation/Screens/Auth/Registraion/View/registration_screen_user.dart';
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Employee/registration_screen_user.dart';
 import 'package:darlemploi/Presentation/Screens/SplashScreen/View/splash_screen.dart';
 import 'package:darlemploi/config/app_router_constants.dart';
-import '../Screens/Auth/Registraion/View/registration_screen_company.dart';
+import '../Screens/Auth/Registraion/Company/registration_screen_company.dart';
 import '../Screens/selectionScreen/selection_screen.dart';
 
 class AppRouter {
@@ -76,8 +76,8 @@ class AppRouter {
           path: AppRouteConstants.registrationScreenCompany,
           pageBuilder: (context, state) {
             saveLocalData(screenName: state.name!);
-            return const MaterialPage(
-              child: RegistrationScreenCompany(),
+            return  MaterialPage(
+              child: CompanyRegistrationScreen(),
             );
           },
         ),

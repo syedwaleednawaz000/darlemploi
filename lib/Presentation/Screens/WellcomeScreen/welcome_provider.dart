@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:darlemploi/Presentation/Screens/Auth/Registraion/View/registration_screen_company.dart';
-import 'package:darlemploi/Presentation/Screens/Auth/Registraion/View/registration_screen_user.dart';
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Company/registration_screen_company.dart';
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Employee/registration_screen_user.dart';
 import 'package:darlemploi/Presentation/Screens/WellcomeScreen/well_come_screen.dart';
 import 'package:darlemploi/config/app_router_constants.dart';
 import 'package:get/get.dart';
@@ -16,9 +16,9 @@ class WelcomeScreenProvider extends ChangeNotifier{
         print("this is new user type $_userType");
       }
     }
-    if(_userType =="company"){
-      Get.to(()=>const RegistrationScreenCompany());
-    }else if(_userType =="candidate"){
+    if(_userType =="recruiter"){
+      Get.to(()=> CompanyRegistrationScreen());
+    }else if(_userType =="employee"){
       Get.to(()=>const RegistrationScreen());
     }
     notifyListeners();
@@ -26,9 +26,6 @@ class WelcomeScreenProvider extends ChangeNotifier{
 
   Future<void> saveUserType({required String userType,required BuildContext context}) async {
     _userType = userType;
-    if (kDebugMode) {
-      print("this is user type $_userType ");
-    }
     Get.to(()=>const WellComeScreen());
     notifyListeners();
     }

@@ -47,7 +47,7 @@ class SelectionScreen extends StatelessWidget {
                     btnColor: Colors.transparent,
                     onTap: () async {
                       Provider.of<WelcomeScreenProvider>(context, listen: false)
-                          .saveUserType(userType: 'company', context: context);
+                          .saveUserType(userType: 'recruiter', context: context);
                     },
                     title: AppTranslations.of(context).iAmCompany,
                     txtColor: Theme
@@ -61,7 +61,7 @@ class SelectionScreen extends StatelessWidget {
                     onTap: () async {
                       Provider.of<WelcomeScreenProvider>(context, listen: false)
                           .saveUserType(
-                          userType: 'candidate', context: context);
+                          userType: 'employee', context: context);
                     },
                     title: AppTranslations.of(context).iAmCandidate,
                     txtColor: Theme

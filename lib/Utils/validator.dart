@@ -1,4 +1,30 @@
 class Validation{
+  static String? validatePostalCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Postal code cannot be empty';
+    }
+
+    // General postal code validation regex
+    if (!RegExp(r'^[a-zA-Z0-9\s\-]{3,10}$').hasMatch(value)) {
+      return 'Please enter a valid postal code';
+    }
+
+    return null; // Return null if validation succeeds
+  }
+
+  static String? validateAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Address cannot be empty';
+    }
+
+    // General address validation regex
+    if (!RegExp(r"^[a-zA-Z0-9\s,.'-]{5,100}$").hasMatch(value)) {
+      return 'Please enter a valid address';
+    }
+
+    return null; // Return null if validation succeeds
+  }
+
   static   String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
       return 'Phone number cannot be empty';

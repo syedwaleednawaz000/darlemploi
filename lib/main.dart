@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Company/Provider/company_registration_provider.dart';
+import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Employee/Provider/user_registration_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/Forgot/Provider/forgot_provider.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/LogIn/Provider/login_provider.dart';
-import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Provider/registration_provider.dart';
 import 'package:darlemploi/Presentation/Screens/NotificationHelper/notification_helper.dart';
 import 'package:darlemploi/Presentation/Screens/SplashScreen/Provider/splash_provider.dart';
 import 'package:darlemploi/Presentation/Screens/SplashScreen/View/splash_screen.dart';
@@ -54,7 +55,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider(create: (_) => HistoryProvider()),
         ChangeNotifierProvider(create: (_) => UserHomeProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
@@ -62,7 +62,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => StripeProvider()),
         ChangeNotifierProvider(create: (_) => WelcomeScreenProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
-        ChangeNotifierProvider(create: (_) => RegistrationProvider()),
+        ChangeNotifierProvider(create: (_) => UserRegistrationProvider()),
+        ChangeNotifierProvider(create: (_) => CompanyRegistrationProvider()),
         ChangeNotifierProvider(create: (_) => ForgotProvider()),
       ],
       child: Builder(builder: (BuildContext context) {

@@ -5,7 +5,7 @@ class English {
     "Password": "Password:",
     "ConnectVia": "Connect vai:",
     "Next": "Next",
-    "Events": "Events",
+    "Events": "BS",
     "PostalCode": "Postal Code:",
     "City": "City:",
     "CompanyAddress": "Company Address:",
