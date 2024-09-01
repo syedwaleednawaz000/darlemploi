@@ -180,7 +180,7 @@ class CompanyRegistrationScreen extends StatelessWidget {
                   const SizedBox(height: 5),
                   TextFormField(
                     validator: Validation.validatePassword,
-                    controller: controllerProvider.companyPasswordConfirmation,
+                    controller: controllerProvider.confirmPasswordController,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: -9),

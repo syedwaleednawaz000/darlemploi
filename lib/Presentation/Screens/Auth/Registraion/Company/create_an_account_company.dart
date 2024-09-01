@@ -229,21 +229,24 @@ class _CompanyRegistrationTwoScreenState
                   SizedBox(height: MySize.size30,),
                   // const Spacer(),
                   Center(
-                    child: MyButton(
-                      width: 140,
-                      btnColor: Theme.of(context).primaryColor,
-                      onTap: () {
-                        if(_formKey.currentState!.validate()){
-                          if(_selectedEvents != null){
-                            Get.to(()=> const CompanyHomeScreen());
-                          }else{
-                            ToastMessage.toastMessage(message: "Please select education",isError: true);
+                    child: Consumer<CompanyRegistrationProvider>(builder: (context, companyRegistrationProvider, child) {
+                      return MyButton(
+                        loading: companyRegistrationProvider.loading,
+                        width: 140,
+                        btnColor: Theme.of(context).primaryColor,
+                        onTap: () {
+                          if(_formKey.currentState!.validate()){
+                            if(_selectedEvents != null){
+                              companyRegistrationProvider.registerCompany(education: _selectedEvents.toString());
+                            }else{
+                              ToastMessage.toastMessage(message: "Please select education",isError: true);
+                            }
                           }
-                        }
 
-                      },
-                      title: AppTranslations.of(context).next,
-                    ),
+                        },
+                        title: AppTranslations.of(context).next,
+                      );
+                    },),
                   ),
                 ],
               ),

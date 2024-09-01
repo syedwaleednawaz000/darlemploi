@@ -7,11 +7,10 @@ import 'package:get/route_manager.dart';
 
 class LoginProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
-  bool _loading = false;
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  bool _loading = false;
   bool get loading => _loading;
 
   void changeLoadingStatus({required bool load}) {

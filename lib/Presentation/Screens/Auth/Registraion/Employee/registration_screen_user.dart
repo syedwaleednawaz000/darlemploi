@@ -33,7 +33,7 @@ class RegistrationScreen extends StatelessWidget {
               Text(
                 AppTranslations.of(context).fullName,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
