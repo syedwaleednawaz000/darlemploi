@@ -35,6 +35,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         });
       }
     });
+    Future.microtask(() => Provider.of<UserHomeProvider>(context,listen: false).getAllJobs());
   }
 
   @override
@@ -45,7 +46,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider = Provider.of<HomeProvider>(context);
+    final homeProvider = Provider.of<UserHomeProvider>(context);
 
     return WillPopScope(
       onWillPop: () async {

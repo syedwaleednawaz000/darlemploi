@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // ChangeNotifierProvider(create: (_) => HistoryProvider()),
-        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => UserHomeProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => SplashProvider()),

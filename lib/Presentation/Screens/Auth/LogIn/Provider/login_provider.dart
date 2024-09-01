@@ -25,20 +25,17 @@ class LoginProvider extends ChangeNotifier {
       Response response = await _apiService.registerUser(params: params);
       if (response.statusCode == 200) {
         changeLoadingStatus(load: false);
-        print(" response in iff ${response.data['data']['user']['type']}");
         if(response.data['data']['user']['type'] == "employee"){
           Get.offAll(() => const UserHomeScreen());
-        }else{
+        }else if( response.data['data']['user']['type'] =="recruiter"){
           Get.offAll(() => const CompanyHomeScreen());
         }
         notifyListeners();
       } else {
         changeLoadingStatus(load: false);
-        print(" response in else ${response.data}");
       }
     } catch (error) {
       changeLoadingStatus(load: false);
-      print("this is error ${error.toString()}");
     }
   }
 

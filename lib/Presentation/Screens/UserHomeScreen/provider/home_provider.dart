@@ -1,6 +1,11 @@
+import 'package:darlemploi/Data/repositories/api_service.dart';
+import 'package:darlemploi/config/app_constant.dart';
+import 'package:darlemploi/config/app_url.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class HomeProvider extends ChangeNotifier {
+class UserHomeProvider extends ChangeNotifier {
+  final ApiService _apiService = ApiService();
   // Controllers for text fields
   final TextEditingController cityController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
@@ -51,6 +56,34 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getAllJobs()async{
+    Map<String , dynamic> body = {
+      "action": AppUrl.getAllJobs,
+      "apply_filters": {
+        "page": 1,
+        "limit": 10,
+        "title": "",
+        "description": "",
+        "locations": [],
+        "duration": 0,
+        "min_salary": 0,
+        "max_salary": 0,
+        "salary_time": 0,
+        "recruiter_id": "",
+        "publication_date": ""
+      }
+    };
+    try{
+      Response response = await _apiService.getAllJobs(params: body);
+      if(response.statusCode == 200){
+        print("this is all jobs ${response.data}");
+      }else{
+        print("in else ${response.data}");
+      }
+    }catch(error){
+      print("error ");
+    }
+  }
   @override
   void dispose() {
     cityController.dispose();
