@@ -171,7 +171,7 @@ class _CompanyRegistrationTwoScreenState
                   Text(
                     '${AppTranslations.of(context).events}:',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
@@ -179,7 +179,7 @@ class _CompanyRegistrationTwoScreenState
                   const SizedBox(height: 5),
                   DropdownButtonFormField<String>(
                     value: _selectedEvents,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     dropdownColor: Theme.of(context).primaryColor.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(12),
                     icon: Icon(Icons.arrow_drop_down_rounded,

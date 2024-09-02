@@ -19,7 +19,7 @@ class WelcomeScreenProvider extends ChangeNotifier{
     if(_userType =="recruiter"){
       Get.to(()=> CompanyRegistrationScreen());
     }else if(_userType =="employee"){
-      Get.to(()=>const RegistrationScreen());
+      Get.to(()=> UserRegistrationScreen());
     }
     notifyListeners();
   }

@@ -46,8 +46,8 @@ class AppRouter {
           path: AppRouteConstants.registration,
           pageBuilder: (context, state) {
             saveLocalData(screenName: state.name!);
-            return const MaterialPage(
-              child: RegistrationScreen(),
+            return  MaterialPage(
+              child: UserRegistrationScreen(),
             );
           },
         ),
