@@ -25,6 +25,24 @@ class UserRegistrationProvider extends ChangeNotifier {
     _loading = load;
     notifyListeners();
   }
+  String formatPhoneNumber(String phoneNumber) {
+    // Remove any leading zeros
+    phoneNumber = phoneNumber.replaceFirst(RegExp(r'^0+'), '');
+
+    // Ensure the phone number only contains digits
+    phoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
+
+    // Add '+' at the start
+    phoneNumber = '+' + phoneNumber;
+
+    // Format the phone number into groups of three with dashes
+    final formattedPhoneNumber = phoneNumber.replaceAllMapped(
+      RegExp(r'(\d{3})(\d{3})(\d{4})'),
+          (Match match) => '${match[1]}-${match[2]}-${match[3]}',
+    );
+
+    return formattedPhoneNumber;
+  }
   Future<void> registerUser({ String? education}) async {
     changeLoadingStatus(load: true);
     Map<String, dynamic> body = {
@@ -34,6 +52,7 @@ class UserRegistrationProvider extends ChangeNotifier {
       "email": emailController.text.trim(),
       "type": "recruiter",
       "phone_number": phoneNumberController.text.trim(),
+      // "phone_number": formatPhoneNumber(phoneNumberController.text.trim()),
       "date_of_birth": "2002-01-01",
       "profile": "https://lambda-layers-bucket-malik.s3.amazonaws.com/CVs/CV-NINI.pdf",
       "list_of_location_ids": [1, 2]

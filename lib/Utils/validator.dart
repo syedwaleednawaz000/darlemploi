@@ -12,6 +12,7 @@ class Validation{
     return null; // Return null if validation succeeds
   }
 
+
   static String? validateAddress(String? value) {
     if (value == null || value.isEmpty) {
       return 'Address cannot be empty';
