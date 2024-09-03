@@ -1,8 +1,10 @@
+import 'package:darlemploi/Presentation/Screens/Auth/LogIn/View/login_screen.dart';
 import 'package:darlemploi/Presentation/Screens/UserHomeScreen/user_home_screen.dart';
 import 'package:darlemploi/config/app_url.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:darlemploi/Data/repositories/api_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class UserRegistrationProvider extends ChangeNotifier {
@@ -13,6 +15,7 @@ class UserRegistrationProvider extends ChangeNotifier {
   TextEditingController postalCodeController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController dobController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -50,10 +53,9 @@ class UserRegistrationProvider extends ChangeNotifier {
       "user_name": fullNameController.text.trim(),
       "password": confirmPasswordController.text.trim(),
       "email": emailController.text.trim(),
-      "type": "recruiter",
+      "type": "employee",
       "phone_number": phoneNumberController.text.trim(),
-      // "phone_number": formatPhoneNumber(phoneNumberController.text.trim()),
-      "date_of_birth": "2002-01-01",
+      "date_of_birth": dobController.text.trim(),
       "profile": "https://lambda-layers-bucket-malik.s3.amazonaws.com/CVs/CV-NINI.pdf",
       "list_of_location_ids": [1, 2]
     };
@@ -62,7 +64,7 @@ class UserRegistrationProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         changeLoadingStatus(load: false);
         print("Response: ${response.data}");
-        Get.offAll(()=> const UserHomeScreen());
+        Get.offAll(()=>  LoginScreen());
       } else {
         changeLoadingStatus(load: false);
         print("Response: ${response.data}");
@@ -73,6 +75,20 @@ class UserRegistrationProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> pickDate({required BuildContext context})async{
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900), // Minimum date
+      lastDate: DateTime(23000), // Maximum date
+    );
+
+    if (pickedDate != null) {
+      String formattedDate = "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+      print("date time  ${formattedDate}");
+      dobController.text = formattedDate; // Set the formatted date to the controller
+    }
+  }
 
   @override
   void dispose() {
@@ -83,6 +99,7 @@ class UserRegistrationProvider extends ChangeNotifier {
     phoneNumberController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    dobController.dispose();
 
     super.dispose();
   }

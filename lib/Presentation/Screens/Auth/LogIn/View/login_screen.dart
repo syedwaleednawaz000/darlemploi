@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                 Consumer<LoginProvider>(
                   builder: (context, loginProvider, child) {
                     return TextFormField(
-                      validator: Validation.validateUsername,
+                      validator: Validation.validateName,
                       controller: loginProvider.userNameController,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white),

@@ -136,6 +136,55 @@ class UserRegistrationScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12.0),
                   Text(
+                    "Date of birth:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 5.0),
+          Consumer<UserRegistrationProvider>(builder:(context, userRegistrationProvider, child) {
+            return             TextFormField(
+              readOnly: true,
+              validator: (newValue){
+                if(newValue!.isEmpty){
+                  return "Date of birth is not ";
+                }else{
+                  return null;
+                }
+              },
+              controller: userRegistrationProvider.dobController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: -9),
+                hintText: 'Date of birth',
+                hintStyle: const TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(55),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(55),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(55),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.calendar_today, color: Colors.white),
+                  onPressed: () async {
+                    userRegistrationProvider.pickDate(context: context);
+                  },
+                ),
+              ),
+            );
+          },),
+
+          const SizedBox(height: 12.0),
+                  Text(
                     AppTranslations.of(context).password,
                     textAlign: TextAlign.center,
                     style: TextStyle(
