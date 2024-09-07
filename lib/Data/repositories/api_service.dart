@@ -15,5 +15,7 @@ class ApiService {
   }
   Future<Response> getAllJobs({required Map<String , dynamic> params}) {
     return apiClient.post(url: "", params: params);
+  }  Future<Response> createJob({required Map<String , dynamic> params}) {
+    return apiClient.post(url: "", params: params);
   }
 }

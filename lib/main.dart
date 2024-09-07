@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Company/Provider/company_registration_provider.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/Registraion/Employee/Provider/user_registration_provider.dart';
+import 'package:darlemploi/Presentation/Screens/CompanyHome/Provider/job_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:darlemploi/Presentation/Screens/Auth/Forgot/Provider/forgot_provider.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserHomeProvider()),
+        ChangeNotifierProvider(create: (_) => CreateJobProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => SplashProvider()),

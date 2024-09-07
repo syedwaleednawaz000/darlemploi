@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:darlemploi/Presentation/Screens/SplashScreen/Provider/splash_provider.dart';
 import 'package:darlemploi/Presentation/Screens/selectionScreen/selection_screen.dart';
 import 'package:darlemploi/Presentation/routes/app_route_configs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,12 +17,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    AppRouter.getLocalData();
-    Timer(const Duration(seconds: 2), () {
-      // context.go('${AppRouter.currentScreen}');
-      // context.push(AppRouteConstants.selectionScreen);
-      Get.to(() => const SelectionScreen());
-    });
+    Future.microtask(() => Provider.of<SplashProvider>(context,listen: false).checkUserLoginStatus());
+    // AppRouter.getLocalData();
+    // Timer(const Duration(seconds: 2), () {
+    //   // context.go('${AppRouter.currentScreen}');
+    //   // context.push(AppRouteConstants.selectionScreen);
+    //   Get.to(() => const SelectionScreen());
+    // });
     // TODO: implement initState
     super.initState();
   }

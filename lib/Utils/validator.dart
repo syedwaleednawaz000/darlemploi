@@ -40,10 +40,6 @@ class Validation{
     if (value == null || value.isEmpty) {
       return 'Name cannot be empty';
     }
-    // Name validation (only allows letters and spaces)
-    if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-      return 'Name can only contain letters and spaces';
-    }
     return null; // Return null if validation succeeds
   }
   static   String? validatePassword(String? value) {
@@ -88,4 +84,14 @@ class Validation{
     return null; // Return null if validation succeeds
   }
 
+  static bool isValidEmail(String email) {
+    return RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+  }
+
+  static bool isValidPhoneNumber(String phoneNumber) {
+    return RegExp(r"^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$")
+        .hasMatch(phoneNumber);
+  }
 }

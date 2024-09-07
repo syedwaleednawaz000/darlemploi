@@ -1,4 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:darlemploi/Presentation/Screens/CompanyHome/companay_home_screen.dart';
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/user_home_screen.dart';
+import 'package:darlemploi/Presentation/Screens/selectionScreen/selection_screen.dart';
+import 'package:darlemploi/config/app_constant.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashProvider with ChangeNotifier {
@@ -39,5 +47,27 @@ class SplashProvider with ChangeNotifier {
   Future<String> _getScreen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(currentScreen) ?? " ";
+  }
+
+  Future<void> checkUserLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Timer(const Duration(seconds: 2), () {
+      String? userDataString = prefs.getString(AppConstant.saveUserdata);
+
+      if (userDataString != null) {
+        print("This is user data $userDataString");
+
+        // Decode the JSON string into a Map
+        Map<String, dynamic> userData = jsonDecode(userDataString);
+
+        if (userData['type'] == "employee") {
+          Get.offAll(() => const UserHomeScreen());
+        } else if (userData['type'] == "recruiter") {
+          Get.offAll(() => const CompanyHomeScreen());
+        }
+      } else {
+        Get.offAll(() => const SelectionScreen());
+      }
+    });
   }
 }
