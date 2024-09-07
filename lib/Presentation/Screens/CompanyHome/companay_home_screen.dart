@@ -1,7 +1,11 @@
+import 'package:darlemploi/Presentation/Screens/CompanyHome/Provider/job_provider.dart';
+import 'package:darlemploi/config/app_constant.dart';
+import 'package:darlemploi/config/app_url.dart';
 import 'package:flutter/material.dart';
 import 'package:darlemploi/Language/app_translation.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../config/app_router_constants.dart';
 import '../../Widget/custom_bg.dart';
 import '../../Widget/custom_text-field.dart';
@@ -61,7 +65,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     );
 
     if (picked != null && picked != DateTime.now()) {
-      final String formattedDate = '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+      final String formattedDate = '${picked.day.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.year}';
       setState(() {
         _selectedDate = formattedDate;
         _dateController.text = _selectedDate;
@@ -255,13 +259,29 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                     ),
                     SizedBox(height: 15),
                     Center(
-                      child: MyButton(
-                        title: AppTranslations.of(context).publish,
-                        onTap: () {
-                          _showConfirmationDialog(context);
-                        },
-                        width: 120,
-                      ),
+                      child: Consumer<CreateJobProvider>(builder: (context, createJobProvider, child) {
+                        return MyButton(
+                          title: AppTranslations.of(context).publish,
+                          onTap: () {
+                            createJobProvider.createJob(
+                              body: {
+                            "action": AppUrl.createJob,
+                            "title": jobTitleController.text.trim(),
+                            "description": jobDescriptionController.text.trim(),
+                            "job_start_date": "2024-01-10",
+                            "duration": durationController.text.trim(),
+                            "salary": salaryController.text.trim(),
+                            "salary_time": salaryController.text.trim(),
+                            "recruiter_id": AppConstant.getUserID,
+                            "publication_date": _dateController.text.trim(),
+                            "location": 1
+                            }
+                            );
+                            // _showConfirmationDialog(context);
+                          },
+                          width: 120,
+                        );
+                      },),
                     )
                   ],
                 ),

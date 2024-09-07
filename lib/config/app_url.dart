@@ -7,4 +7,5 @@ class AppUrl{
   static String loginUser = "login_user";
   static String getAllJobs = "get_all_jobs";
   static String getAllCandidates = "get_all_candidates";
+  static String createJob = "create_job";
 }

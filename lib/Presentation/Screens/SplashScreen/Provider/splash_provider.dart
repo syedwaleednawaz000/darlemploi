@@ -59,7 +59,7 @@ class SplashProvider with ChangeNotifier {
 
         // Decode the JSON string into a Map
         Map<String, dynamic> userData = jsonDecode(userDataString);
-
+        AppConstant.getUserID = userData['id'].toString();
         if (userData['type'] == "employee") {
           Get.offAll(() => const UserHomeScreen());
         } else if (userData['type'] == "recruiter") {
