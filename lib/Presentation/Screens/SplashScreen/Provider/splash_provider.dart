@@ -55,14 +55,15 @@ class SplashProvider with ChangeNotifier {
       String? userDataString = prefs.getString(AppConstant.saveUserdata);
 
       if (userDataString != null) {
-        print("This is user data $userDataString");
 
         // Decode the JSON string into a Map
         Map<String, dynamic> userData = jsonDecode(userDataString);
-        AppConstant.getUserID = userData['id'].toString();
-        if (userData['type'] == "employee") {
+        print("This is user data ${userData['token']}");
+        AppConstant.getUserToken = userData['token'].toString();
+            AppConstant.getUserID = userData['user']['id'].toString();
+        if (userData['user']['type'] == "employee") {
           Get.offAll(() => const UserHomeScreen());
-        } else if (userData['type'] == "recruiter") {
+        } else if (userData['user']['type'] == "recruiter") {
           Get.offAll(() => const CompanyHomeScreen());
         }
       } else {

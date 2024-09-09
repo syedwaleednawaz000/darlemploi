@@ -51,6 +51,10 @@ class APIClient {
 
   /// for Post request.
   Future<Response> post({required String url, dynamic params,}) async {
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${AppConstant.getUserToken}'
+    };
     try {
       final response = await _dio.post(
         url,

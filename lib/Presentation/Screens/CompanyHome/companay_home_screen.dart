@@ -3,8 +3,10 @@ import 'package:darlemploi/config/app_constant.dart';
 import 'package:darlemploi/config/app_url.dart';
 import 'package:flutter/material.dart';
 import 'package:darlemploi/Language/app_translation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../config/app_router_constants.dart';
 import '../../Widget/custom_bg.dart';
@@ -24,12 +26,13 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
   final TextEditingController jobTitleController = TextEditingController();
   final TextEditingController numberOfPeopleController = TextEditingController();
   final TextEditingController salaryController = TextEditingController();
+  final TextEditingController salaryTimeController = TextEditingController();
   final TextEditingController durationController = TextEditingController();
   final TextEditingController jobDescriptionController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   Color _appBarColor = Colors.transparent;
   final TextEditingController _dateController = TextEditingController();
-  String _selectedDate = '20/04/2024'; // Default date format
+  String _selectedDate = '2024-04-20'; // Default date format
 
   @override
   void initState() {
@@ -45,7 +48,6 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
         });
       }
     });
-
     _dateController.text = _selectedDate;
   }
 
@@ -55,7 +57,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     _dateController.dispose();
     super.dispose();
   }
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -65,7 +67,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     );
 
     if (picked != null && picked != DateTime.now()) {
-      final String formattedDate = '${picked.day.toString().padLeft(2, '0')}-${picked.month.toString().padLeft(2, '0')}-${picked.year}';
+      final String formattedDate = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
       setState(() {
         _selectedDate = formattedDate;
         _dateController.text = _selectedDate;
@@ -158,7 +160,10 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               ),
               // Use SliverToBoxAdapter to add non-sliver widgets
               SliverToBoxAdapter(
-                child: Column(
+                child: Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                    key: _formKey,
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(AppTranslations.of(context).publishOfferFree,
@@ -173,27 +178,78 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                       hintText: 'Animation M/W',
                       titleText: AppTranslations.of(context).jobTitle,
                       controller: jobTitleController,
+                      validator: (newValue){
+                        if(newValue!.isEmpty){
+                          return "Job title cant be empty";
+                        }else if(newValue.length< 5){
+                          return "title must greater then 5 char";
+                        }
+                        return null;
+                      },
                     ),
-                    CustomTextField(
-                      textAlign: TextAlign.start,
-                      titleText: AppTranslations.of(context).numberOfPeople,
-                      hintText: '10',
-                      controller: numberOfPeopleController,
-                    ),
+                  CustomTextField(
+                    keyboardType: TextInputType.number, // Ensure numeric input
+                    controller: numberOfPeopleController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // Allow digits only
+                      LengthLimitingTextInputFormatter(3), // Limit to 3 digits
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Number of people cannot be empty'; // Check if the field is empty
+                      }
+                      if (int.tryParse(value) == null || int.parse(value) <= 0) {
+                        return 'Enter a valid number of people'; // Ensure it's a valid positive number
+                      }
+                      return null;
+                    },
+                    textAlign: TextAlign.start,
+                    titleText: AppTranslations.of(context).numberOfPeople,
+                    hintText: '10', // Example placeholder text
+                  ),
                     Row(
                       children: [
                         Expanded(
                           child: CustomTextField(
+                            keyboardType: TextInputType.number, // to ensure only numbers are entered
+                            controller: salaryController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // allow only digits
+                              LengthLimitingTextInputFormatter(7), // limit the input to 7 digits (adjust as needed)
+                            ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Salary cannot be empty'; // check if field is empty
+                              }
+                              if (int.tryParse(value) == null || int.parse(value) <= 0) {
+                                return 'Enter a valid salary amount'; // ensure it's a valid positive number
+                              }
+                              return null;
+                            },
                             textAlign: TextAlign.start,
                             titleText: AppTranslations.of(context).salary,
-                            hintText: '10',
-                            controller: salaryController,
+                            hintText: '10', // example placeholder
                           ),
                         ),
                         Expanded(
                           child: CustomTextField(
+                            keyboardType: TextInputType.number,
+                            controller: salaryTimeController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'[1-3]')), // only allow digits 1, 2, or 3
+                              LengthLimitingTextInputFormatter(1), // limit input to 1 digit
+                            ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Salary time cannot be empty';
+                              }
+                              if (!['1', '2', '3'].contains(value)) {
+                                return 'Salary time must be 1, 2, or 3';
+                              }
+                              return null;
+                            },
                             textAlign: TextAlign.start,
-                            titleText: '   ',
+                            titleText: 'Salary time',
                             hintText: AppTranslations.of(context).day,
                           ),
                         ),
@@ -205,6 +261,12 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                           child: CustomTextField(
                             readOnly: true,
                             controller: _dateController,
+                            validator: (newValue){
+                              if(newValue!.isEmpty){
+                                return "Start date cant be empty";
+                              }
+                              return null;
+                            },
                             onTap: _selectDate,
                             textAlign: TextAlign.start,
                             titleText: AppTranslations.of(context).start,
@@ -213,10 +275,24 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                         ),
                         Expanded(
                           child: CustomTextField(
+                            keyboardType: TextInputType.number, // Use numeric keyboard
+                            controller: durationController,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                            ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Duration cannot be empty'; // Check if the field is empty
+                              }
+                              final number = int.tryParse(value); // Try to parse the value as an integer
+                              if (number == null || number <= 2) {
+                                return 'Enter a number greater than 2'; // Ensure the number is greater than 2
+                              }
+                              return null;
+                            },
                             textAlign: TextAlign.start,
                             titleText: AppTranslations.of(context).duration,
-                            hintText: '> 2 Months',
-                            controller: durationController,
+                            hintText: '> 2', // Example placeholder text
                           ),
                         ),
                       ],
@@ -237,6 +313,12 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                       child: TextFormField(
                         maxLines: 6,
                         style: const TextStyle(color: Colors.white),
+                        validator: (newValue){
+                          if(newValue!.isEmpty){
+                            return "Description cant be empty";
+                          }
+                          return null;
+                        },
                         controller: jobDescriptionController,
                         decoration: InputDecoration(
                           contentPadding:  const EdgeInsets.only(left:  20,top:  30,right: 20,bottom: 10),
@@ -257,26 +339,29 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Center(
                       child: Consumer<CreateJobProvider>(builder: (context, createJobProvider, child) {
                         return MyButton(
                           title: AppTranslations.of(context).publish,
                           onTap: () {
-                            createJobProvider.createJob(
-                              body: {
-                            "action": AppUrl.createJob,
-                            "title": jobTitleController.text.trim(),
-                            "description": jobDescriptionController.text.trim(),
-                            "job_start_date": "2024-01-10",
-                            "duration": durationController.text.trim(),
-                            "salary": salaryController.text.trim(),
-                            "salary_time": salaryController.text.trim(),
-                            "recruiter_id": AppConstant.getUserID,
-                            "publication_date": _dateController.text.trim(),
-                            "location": 1
+                            if(_formKey.currentState!.validate()){
+
+                              createJobProvider.createJob(
+                                  body: {
+                                    "action": AppUrl.createJob,
+                                    "title": jobTitleController.text.trim(),
+                                    "description": jobDescriptionController.text.trim(),
+                                    "job_start_date": _dateController.text.trim(),
+                                    "duration": int.parse(durationController.text.trim()),
+                                    "salary": int.parse(salaryController.text.trim()),
+                                    "salary_time": int.parse(salaryTimeController.text.trim()),
+                                    "recruiter_id": int.parse(AppConstant.getUserID),
+                                    "publication_date": _dateController.text.trim(),
+                                    "location": 1
+                                  }
+                              );
                             }
-                            );
                             // _showConfirmationDialog(context);
                           },
                           width: 120,
@@ -284,7 +369,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
                       },),
                     )
                   ],
-                ),
+                )),
               ),
             ],
           ),

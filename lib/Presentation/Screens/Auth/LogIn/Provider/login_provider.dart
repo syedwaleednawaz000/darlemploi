@@ -28,7 +28,7 @@ class LoginProvider extends ChangeNotifier {
       Response response = await _apiService.registerUser(params: params);
       if (response.statusCode == 200) {
         changeLoadingStatus(load: false);
-        storeUserLocalData(userData: response.data['data']['user']);
+        storeUserLocalData(userData: response.data['data']);
         if(response.data['data']['user']['type'] == "employee"){
           Get.offAll(() => const UserHomeScreen());
         }else if( response.data['data']['user']['type'] =="recruiter"){
@@ -47,6 +47,7 @@ class LoginProvider extends ChangeNotifier {
   void storeUserLocalData({required Map<String, dynamic> userData}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Convert the userData Map to a JSON string before storing it
+    print("this is print data ${userData.toString()}");
     prefs.setString(AppConstant.saveUserdata, jsonEncode(userData));
   }
 

@@ -1,8 +1,12 @@
   import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
   class CustomTextField extends StatelessWidget {
     final TextEditingController? controller;
     final String hintText;
+    TextInputType? keyboardType;
+    List<TextInputFormatter>? inputFormatters;
+    String? Function(String?)? validator;
     final String titleText;
     final bool? readOnly;
     final TextAlign textAlign;
@@ -11,10 +15,13 @@
     final EdgeInsetsGeometry? contentPadding;
     final bool obscureText;
 
-    const CustomTextField({
+     CustomTextField({
       Key? key,
       this.controller,
       this.onTap,
+       this.keyboardType,
+       this.inputFormatters,
+      this.validator,
       this.readOnly,
       required this.hintText,
       this.textAlign = TextAlign.center,
@@ -40,8 +47,11 @@
               height: 40,
               child: TextFormField(
                 onTap: onTap,
+                keyboardType: keyboardType,
+                validator: validator,
                 controller: controller,
                 textAlign: textAlign,
+                inputFormatters: inputFormatters,
                 readOnly: readOnly ?? false,
                 style: style ?? const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
