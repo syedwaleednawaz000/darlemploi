@@ -1,69 +1,20 @@
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/Model/get_all_job_model.dart';
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/components/success_job_dialog.dart';
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/provider/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:darlemploi/Language/app_translation.dart';
 import 'package:darlemploi/Presentation/Widget/my_button.dart';
+import 'package:provider/provider.dart';
 
 class HomeCardWidget extends StatelessWidget {
-  final String? title;
-  final String? dailyRate;
-  final String? dateRange;
-  final String? description;
-  final String? location;
-  final VoidCallback onButtonTap;
-
-  const HomeCardWidget({
+  Jobs? jobs;
+  int index ;
+   HomeCardWidget({
     Key? key,
-    this.title,
-    this.dailyRate,
-    this.dateRange,
-    this.description,
-    this.location,
-    required this.onButtonTap,
+    this.jobs,
+     required this.index,
   }) : super(key: key);
 
-  void _showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: true, // Allows dismissing the dialog by tapping outside
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero, // Remove default padding
-          content: Container(
-            height: 250, // Set the fixed height
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(22),
-              border: Border.all(color: Colors.indigo,width: 2)
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  String.fromCharCode(Icons.check_rounded.codePoint),
-                  style: TextStyle(
-                    inherit: false,
-                    color: Colors.green,
-                    fontSize: 100,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: Icons.check_rounded.fontFamily,
-                    package: Icons.check_rounded.fontPackage,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  AppTranslations.of(context).yourApplicationSent,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +30,7 @@ class HomeCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title ?? AppTranslations.of(context).aRKAAgency,
+            jobs!.title.toString() ?? AppTranslations.of(context).aRKAAgency,
             style: TextStyle(
               color: Theme.of(context).scaffoldBackgroundColor,
               fontSize: 30,
@@ -92,7 +43,7 @@ class HomeCardWidget extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  dailyRate ?? '4000 DZD/${AppTranslations.of(context).day}',
+                  jobs!.salary.toString() ?? '4000 DZD/${AppTranslations.of(context).day}',
                   style: TextStyle(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 18,
@@ -100,7 +51,7 @@ class HomeCardWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  dateRange ?? 'From 20 to 30 Jul',
+                  jobs!.jobStartDate ?? 'From 20 to 30 Jul',
                   style: TextStyle(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 14,
@@ -112,7 +63,7 @@ class HomeCardWidget extends StatelessWidget {
           ),
           Center(
             child: Text(
-              description ?? '10 Animation M/W',
+              jobs!.description ?? '10 Animation M/W',
               style: TextStyle(
                 color: Theme.of(context).hintColor,
                 fontSize: 25,
@@ -122,7 +73,7 @@ class HomeCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            location ?? 'Hussein Day, Alger',
+            jobs!.location.toString() ?? 'Hussein Day, Alger',
             style: TextStyle(
               color: Theme.of(context).scaffoldBackgroundColor,
               fontSize: 16,
@@ -131,12 +82,18 @@ class HomeCardWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Center(
-            child: MyButton(
-              title: AppTranslations.of(context).apply,
-              onTap: () {
-                _showConfirmationDialog(context);
+            child: Consumer<UserHomeProvider>(
+              builder: (context, userHomeProvider, child) {
+                return MyButton(
+                  loading: userHomeProvider.applyJobLoading ==true && userHomeProvider.currentIndex == index?true:false,
+                  title: AppTranslations.of(context).apply,
+                  onTap: () {
+                    userHomeProvider.applyForAJob(jobID: jobs!.id.toString(), context: context);
+                    // _showConfirmationDialog(context);
+                  },
+                  width: 120,
+                );
               },
-              width: 120,
             ),
           ),
         ],

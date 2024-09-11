@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomBackGround extends StatefulWidget {
   Widget body;
+  Key? scaffoldKey;
+  Widget? drawer;
   Widget? bottom;
 
-  CustomBackGround({this.bottom,required this.body, super.key});
+  CustomBackGround({this.drawer,this.scaffoldKey,this.bottom,required this.body, super.key});
 
   @override
   State<CustomBackGround> createState() => _CustomBackGroundState();
@@ -41,6 +43,8 @@ class _CustomBackGroundState extends State<CustomBackGround> {
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
               ),
               child: Scaffold(
+                key: widget.scaffoldKey,
+                drawer: widget.drawer,
                 bottomNavigationBar: widget.bottom != null ? widget.bottom:null,
                 backgroundColor: Colors.transparent,
                 resizeToAvoidBottomInset: false,

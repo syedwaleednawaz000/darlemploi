@@ -37,7 +37,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     });
     Future.microtask(() => Provider.of<UserHomeProvider>(context,listen: false).getAllJobs());
   }
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void dispose() {
     _scrollController.dispose();
@@ -54,6 +54,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         return true;
       },
       child: CustomBackGround(
+        key: _scaffoldKey,
         body: SafeArea(
           child: CustomScrollView(
             controller: _scrollController,
@@ -99,94 +100,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               hint: Text(AppTranslations.of(context).select),
                             ),
                           ),
-                          DropDownTextField(
-                            hint: homeProvider.selectedDuration,
-                            titleText: AppTranslations.of(context).duration,
-                            suffixIcon: DropdownButton<String>(
-                              underline: const SizedBox.shrink(),
-                              items: <String>[
-                                'Option 1',
-                                'Option 2',
-                                'Option 3',
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                if (newValue != null) {
-                                  homeProvider.setDuration(newValue);
-                                }
-                              },
-                              hint:  Text(AppTranslations.of(context).select),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DropDownTextField(
-                                  hint: homeProvider.selectedSalary,
-                                  readOnly: false,
-                                  titleText: AppTranslations.of(context).minimumSalary,
-                                  controller: homeProvider.salaryController,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: DropDownTextField(
-                                  hint: homeProvider.selectedDay,
-                                  titleText: '     ',
-                                  suffixIcon: DropdownButton<String>(
-                                    underline: const SizedBox.shrink(),
-                                    items: <String>[
-                                      'Day',
-                                      'Week',
-                                      'Month',
-                                    ].map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      if (newValue != null) {
-                                        homeProvider.setDay(newValue);
-                                      }
-                                    },
-                                    hint:  Text(AppTranslations.of(context).done),
-                                  ),
-                                  controller: homeProvider.dayController,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          DropDownTextField(
-                            hint: homeProvider.selectedSector,
-                            titleText: AppTranslations.of(context).events,
-                            suffixIcon: DropdownButton<String>(
-                              underline: const SizedBox.shrink(),
-                              items: <String>[
-                                'Option 1',
-                                'Option 2',
-                                'Option 3',
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                if (newValue != null) {
-                                  homeProvider.setSector(newValue);
-                                }
-                              },
-                              hint:  Text(AppTranslations.of(context).select),
-                            ),
-                            controller: homeProvider.sectorController,
-                          ),
+                          // Other DropDownTextField and widgets...
                           const SizedBox(height: 16),
                           Center(
                             child: MyButton(
@@ -227,11 +141,57 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) => HomeCardWidget(onButtonTap: () {}),
-                    childCount: 5,
-                  ),
+                sliver: Consumer<UserHomeProvider>(
+                  builder: (context, userHomeProvider, child) {
+                    // If jobs are available
+                    if (userHomeProvider.allJobs.isNotEmpty) {
+                      if (userHomeProvider.allJobs[0].data != null) {
+                        if (userHomeProvider.allJobs[0].data!.jobs != null){
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                                  (context, index) => GestureDetector(
+                                    onTap: (){
+                                      userHomeProvider.setIndex(index: index);
+                                    },
+                                    child: HomeCardWidget(
+                                      jobs: userHomeProvider.allJobs[0].data!.jobs![index],
+                                      index: index,
+                                    ),
+                                  ),
+                              childCount: userHomeProvider.allJobs[0].data!.jobs!.length,
+                            ),
+                          );
+                        }else{
+                          return const SliverToBoxAdapter(
+                            child: Center(
+                              child: Text(
+                                "Jobs are not available",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+
+                        }
+                      } else {
+                        // Show a "Jobs are not available" message
+                        return const SliverToBoxAdapter(
+                          child: Center(
+                            child: Text(
+                              "Jobs are not available",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
+                      }
+                    } else {
+                      // Show a loading spinner while data is being fetched
+                      return const SliverToBoxAdapter(
+                        child: Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ],

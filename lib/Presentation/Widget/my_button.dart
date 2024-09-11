@@ -47,7 +47,7 @@ class MyButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            loading == true ? SizedBox(height: 20,width: 20 , child: CircularProgressIndicator(color: Colors.green,),): Text(
+            loading == true ? const SizedBox(height: 20,width: 20 , child: CircularProgressIndicator(color: Colors.green,),): Text(
               title.toString(),
               textAlign: TextAlign.center,
               style: TextStyle(

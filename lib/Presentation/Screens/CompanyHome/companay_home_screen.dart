@@ -1,3 +1,5 @@
+import 'package:darlemploi/Presentation/Screens/Auth/LogIn/View/login_screen.dart';
+import 'package:darlemploi/Presentation/Screens/CompanyHome/Component/drawer_for_company.dart';
 import 'package:darlemploi/Presentation/Screens/CompanyHome/Provider/job_provider.dart';
 import 'package:darlemploi/config/app_constant.dart';
 import 'package:darlemploi/config/app_url.dart';
@@ -57,6 +59,7 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
     _dateController.dispose();
     super.dispose();
   }
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Future<void> _selectDate() async {
     final DateTime? picked = await showDatePicker(
@@ -119,7 +122,6 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -128,6 +130,8 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
         return true;
       },
       child: CustomBackGround(
+        key: _scaffoldKey,
+        drawer: const CustomDrawer(),
         body: SafeArea(
           child: CustomScrollView(
             controller: _scrollController,
@@ -135,8 +139,17 @@ class _CompanyHomeScreenState extends State<CompanyHomeScreen> {
               SliverAppBar(
                 pinned: true,
                 automaticallyImplyLeading: false,
-                leading: const SizedBox(
-                  child: Icon(Icons.menu_rounded, color: Colors.white),
+                leading:  SizedBox(
+                  child: GestureDetector(
+                    onTap: (){
+                      Get.offAll(()=> LoginScreen());
+                      // WidgetsBinding.instance.addPostFrameCallback((_) {
+                      //   if (_scaffoldKey.currentState != null) {
+                      //     _scaffoldKey.currentState!.openDrawer();
+                      //   }
+                      // });
+                    },
+                      child: Icon(Icons.menu_rounded, color: Colors.white)),
                 ),
                 backgroundColor: _appBarColor,
                 title: Image.asset('assets/Images/name_logo.png', height: 70, width: 170),

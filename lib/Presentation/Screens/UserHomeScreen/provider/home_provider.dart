@@ -1,8 +1,11 @@
 import 'package:darlemploi/Data/repositories/api_service.dart';
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/Model/get_all_job_model.dart';
+import 'package:darlemploi/Presentation/Screens/UserHomeScreen/components/success_job_dialog.dart';
 import 'package:darlemploi/config/app_constant.dart';
 import 'package:darlemploi/config/app_url.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserHomeProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -55,7 +58,8 @@ class UserHomeProvider extends ChangeNotifier {
     dayController.text = value;
     notifyListeners();
   }
-
+   List<GetAllJobModel> _allJobs = [];
+  List<GetAllJobModel> get  allJobs =>  _allJobs;
   Future<void> getAllJobs()async{
     Map<String , dynamic> body = {
       "action": AppUrl.getAllJobs,
@@ -77,6 +81,9 @@ class UserHomeProvider extends ChangeNotifier {
       Response response = await _apiService.getAllJobs(params: body);
       if(response.statusCode == 200){
         print("this is all jobs ${response.data}");
+        _allJobs.add(GetAllJobModel.fromJson(response.data));
+        print("this is all jobs ${response.data}");
+        notifyListeners();
       }else{
         print("in else ${response.data}");
       }
@@ -84,6 +91,54 @@ class UserHomeProvider extends ChangeNotifier {
       print("error ");
     }
   }
+  bool applyJobLoading = false;
+  void loadingApplyJob({required bool load}){
+    applyJobLoading = load;
+    notifyListeners();
+  }
+  int currentIndex = -1;
+  void setIndex({required int index}){
+    currentIndex = index;
+    notifyListeners();
+  }
+  Future<void> applyForAJob({required String jobID,required BuildContext context})async{
+    loadingApplyJob(load: true);
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    print(formattedDate);
+    Map<String , dynamic> body = {
+      "action": "apply_for_job",
+      "user_id":int.parse(AppConstant.getUserID),
+      "job_id":int.parse(jobID),
+      "application_date":formattedDate,
+      "status":"pending"
+    };
+    try{
+      Response response = await _apiService.getAllJobs(params: body);
+      if(response.statusCode == 200){
+        loadingApplyJob(load: false);
+        _showConfirmationDialog(context);
+        print("this is all jobs ${response.data}");
+        notifyListeners();
+      }else{
+        loadingApplyJob(load: false);
+        print("in else ${response.data}");
+      }
+    }catch(error){
+      loadingApplyJob(load: false);
+      print("error ");
+    }
+  }
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true, // Allows dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return const SuccessJobDialog();
+      },
+    );
+  }
+
   @override
   void dispose() {
     cityController.dispose();
